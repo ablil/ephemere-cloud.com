@@ -30,7 +30,7 @@ const PageWrapper = ({ children }) => {
         {children}
       </section>
 
-      <footer className="text-center m-auto">
+      <footer className="text-center my-8 m-auto">
         <article className="my-4">
           <a className="px-2 underline" href="#">
             privacy policy
