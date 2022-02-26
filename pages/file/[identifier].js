@@ -2,8 +2,8 @@ import { enableIndexedDbPersistence } from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Container from "../../layouts/container";
-import PageWrapper from "../../layouts/main";
+import Container from "../../components/layouts/container";
+import PageWrapper from "../../components/layouts/main";
 import { getdownloadUrl, lookupfile } from "../../services/storage";
 
 const File = () => {
@@ -98,7 +98,7 @@ const File = () => {
                 fontSize: "1.5rem",
               }}
             >
-              <strong>File is locked !</strong>
+              <strong className="text-sky-600">File is locked !</strong>
             </header>
             <form onSubmit={unlockFile}>
               <section>
@@ -113,7 +113,10 @@ const File = () => {
                   correct password to unlock
                 </h1>
                 <input
-                  id="unlock-input"
+                  style={{
+                    borderBottom: "1px solid white",
+                  }}
+                  className="outline-none border-none p-4 border-b-2 bg-transparent"
                   type="password"
                   value={password}
                   placeholder="**************"
@@ -121,10 +124,7 @@ const File = () => {
                 />
                 {error && (
                   <div
-                    style={{
-                      textAlign: "center",
-                      color: "red",
-                    }}
+                  className="text-center text-red-400"
                   >
                     {error}
                   </div>

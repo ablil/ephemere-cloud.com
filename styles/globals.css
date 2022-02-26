@@ -1,3 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  a {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .custom-button {
+    @apply bg-sky-600 hover:bg-sky-500 py-2 px-6 inline-block cursor-pointer my-4 rounded-xl text-sky-900;
+  }
+  .feature {
+    @apply max-w-xs;
+  }
+  .feature h3 {
+    @apply flex items-center;
+  }
+  .feature h3 span {
+    @apply font-bold pl-2;
+  }
+
+  .info {
+    @apply flex flex-col mt-4;
+  }
+
+  .info strong {
+    @apply text-sky-600 font-semibold;
+  }
+  .info input {
+    @apply bg-transparent inline-block mx-auto;
+  }
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 :root {
   --background-color: #000;
@@ -19,188 +55,3 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
-
-a {
-  color: var(--link-color);
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-/* main layout start */
-main {
-  width: 90%;
-  max-width: 72rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-main footer {
-  text-align: center;
-  margin: auto;
-}
-main footer a {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  text-transform: capitalize;
-}
-
-main footer article {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-main header {
-  text-align: center;
-}
-
-#brand {
-  color: white;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 4rem;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-#brand span:last-child {
-  color: #a9d596;
-  background: -webkit-linear-gradient(45deg, #a9d596, #0da6aa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-/* main layout end */
-
-#file-upload {
-  width: 100%;
-  cursor: pointer;
-  display: none;
-}
-#little-description {
-  /* font-weight: bold; */
-  color: white;
-  font-size: 1.1234rem;
-}
-
-/* key features start */
-#how-to-use {
-  background: #111111;
-  padding: 1rem;
-}
-#how-to-use h2 {
-  text-align: center;
-  color: white;
-}
-#how-to-use h3 {
-  color: white;
-  text-transform: capitalize;
-  display: flex;
-  align-items: center;
-}
-#how-to-use h3 span {
-  padding-left: 0.5rem;
-}
-#how-to-use section {
-  display: flex;
-  justify-content: center;
-}
-
-#how-to-use .feature {
-  max-width: 15rem;
-}
-/* key features end */
-
-/* wrapper layout start */
-.container {
-  padding: 1rem;
-  border-radius: 1rem;
-  text-align: center;
-  margin: 2rem auto;
-  background: #242424;
-  background: linear-gradient(to left, #a9d596, #0da6aa);
-  border: 1px solid white;
-}
-.content {
-  border: 2px dashed #afafaf;
-  border-radius: 1rem;
-  /* max-width: 25rem; */
-  padding: 1rem;
-  color: white;
-  margin: auto;
-  background: black;
-}
-/* wrapper layout end */
-
-#upload input {
-  background: transparent;
-  outline: none;
-  border: none;
-  color: white;
-}
-
-/* label and text start  */
-.info {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-.info strong {
-  color: #a9d596;
-  margin-top: 0.5rem;
-}
-.info input {
-  display: inline-block;
-  margin-top: 0.5rem;
-  margin: auto;
-  color: #a9d596;
-}
-/* label and text end  */
-
-#unlock-input {
-  outline: none;
-  border: none;
-  padding: 1rem;
-  border-bottom: 2px solid white;
-  background: transparent;
-  color: white;
-}
-
-#downloadable-link {
-  text-align: center;
-  margin: 1rem auto;
-  font-size: 1.234rem;
-  color: #a9d596;
-}
-
-.custom-button {
-  border: none;
-  outline: none;
-  display: inline-block;
-  font-weight: bold;
-  margin: 2rem auto;
-  padding: 0.5rem 2rem;
-  border-radius: 1rem;
-  color: black;
-  background: linear-gradient(to left, #a9d596, #0da6aa);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.custom-button:hover {
-  opacity: 0.7;
-  text-decoration: none;
-}
-
-/* make mobile responsive start */
-@media screen and (max-width: 958px) {
-  #how-to-use {
-  }
-  #how-to-use section {
-    flex-direction: column;
-  }
-  .feature {
-    margin: auto;
-  }
-}
-/* make mobile responsive end */

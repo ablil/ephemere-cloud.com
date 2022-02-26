@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Upload from "../components/Upload";
-import PageWrapper from "../layouts/main";
+import PageWrapper from "../components/layouts/main";
 
 export default function Home() {
   const [downloadlink, setDownloadlink] = useState();
@@ -26,14 +26,18 @@ export default function Home() {
       <Upload beforeUpload={beforeUpload} afterUpload={afterUpload} />
 
       {!uploading && uploaded && (
-        <article id="downloadable-link">
-          <h1>Share this link with your friends !</h1>
-          <Link href={downloadlink || "/"}>{downloadlink}</Link>
+        <article className="text-center mx-auto my-4">
+          <h1 className="text-sky-500">Share this link with your friends !</h1>
+          <div className="py-4 underline font-bold text-white">
+            <Link href={downloadlink || "/"}>{downloadlink}</Link>
+          </div>
         </article>
       )}
-      <section id="how-to-use">
-        <h2>What are the key feature of EphemereCloud</h2>
-        <section>
+      <section className="bg-sky-900 p-4 text-white py-12">
+        <h2 className="text-center text-2xl mb-4">
+          What are the key feature of EphemereCloud
+        </h2>
+        <section className="flex flex-column lg:flex-row justify-center">
           <article className="feature">
             <h3>
               <Image src="/images/filetype.png" height={70} width={70} alt="" />
