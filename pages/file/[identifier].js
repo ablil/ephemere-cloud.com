@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Container from "../../components/layouts/container";
-import PageWrapper from "../../components/layouts/main";
+import PageWrapper from "../../components/layouts/pagewrapper";
 import { getdownloadUrl, lookupfile } from "../../services/storage";
 
 const File = () => {

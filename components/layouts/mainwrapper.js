@@ -1,7 +1,7 @@
-import Link from "next/link";
 import React from "react";
+import PageWrapper from "./pagewrapper";
 
-const PageWrapper = ({ children }) => {
+const MainWrapper = ({ children }) => {
   return (
     <main className="w-11/12 max-w-6xl mx-auto">
       <header className="text-center my-8">
@@ -22,17 +22,8 @@ const PageWrapper = ({ children }) => {
       >
         {children}
       </section>
-
-      <footer className="text-center m-auto">
-        <article className="my-4">
-          <a className="px-2 underline" href="#">privacy policy</a>
-          <a className="px-2 underline" href="#">contact us</a>
-          <a className="px-2 underline" href="#">FAQ</a>
-        </article>
-        <article>&copy; 2022 ephemere, All rights reserverd.</article>
-      </footer>
     </main>
   );
 };
 
-export default PageWrapper;
+export default MainWrapper
