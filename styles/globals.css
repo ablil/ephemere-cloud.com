@@ -12,13 +12,12 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   font-family: "Roboto", sans-serif;
+  overflow-x: hidden;
 }
 
 body {
-  max-width: 50rem;
   margin-left: auto;
   margin-right: auto;
-  padding: 1rem;
 }
 
 a {
@@ -30,8 +29,15 @@ a:hover {
 }
 
 /* main layout start */
+main {
+  width: 90%;
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 main footer {
   text-align: center;
+  margin: auto;
 }
 main footer a {
   padding-left: 0.5rem;
@@ -54,13 +60,15 @@ main header {
   font-style: italic;
   font-size: 4rem;
   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 #brand span:last-child {
   color: #a9d596;
   background: -webkit-linear-gradient(45deg, #a9d596, #0da6aa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  padding-right: 1rem;
 }
 /* main layout end */
 
@@ -183,3 +191,16 @@ main header {
   opacity: 0.7;
   text-decoration: none;
 }
+
+/* make mobile responsive start */
+@media screen and (max-width: 958px) {
+  #how-to-use {
+  }
+  #how-to-use section {
+    flex-direction: column;
+  }
+  .feature {
+    margin: auto;
+  }
+}
+/* make mobile responsive end */

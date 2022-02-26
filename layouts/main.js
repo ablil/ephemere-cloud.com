@@ -11,13 +11,17 @@ const PageWrapper = ({ children }) => {
         </h1>
         <article id="little-description">
           <p>Share files with your friend in a volatile cloud.</p>
-          <p>
-            Protect your files with a password and set a timer for removal.
-          </p>
+          <p>Protect your files with a password and set a timer for removal.</p>
         </article>
       </header>
 
-      <section>{children}</section>
+      <section
+        style={{
+          margin: "auto",
+        }}
+      >
+        {children}
+      </section>
 
       <footer>
         <article>
