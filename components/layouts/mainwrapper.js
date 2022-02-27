@@ -1,29 +1,33 @@
+import Link from "next/link";
 import React from "react";
-import PageWrapper from "./pagewrapper";
 
 const MainWrapper = ({ children }) => {
   return (
-    <main className="w-11/12 max-w-6xl mx-auto">
-      <header className="text-center my-8">
-        <h1 className="flex justify-center italic text-6xl my-4">
-          <span className="text-white">Ephemere</span>
-          <span className="text-sky-600 font-bold">Cloud</span>
-        </h1>
-        <article className="text-white text-xl">
-          <p>Share files with your friend in a volatile cloud.</p>
-          <p>Protect your files with a password and set a timer for removal.</p>
-        </article>
-      </header>
-
-      <section
-        style={{
-          margin: "auto",
-        }}
-      >
-        {children}
-      </section>
+    <main className="w-full h-full font-light">
+      <section className="">{children}</section>
+      <footer className="p-12 font-light">
+        <section className="mx-auto flex-center">
+          <ul className="flex items-center">
+            <li className="px-2 hover:underline">
+              <Link href="/features">Features</Link>
+            </li>
+            <li className="px-2 hover:underline">
+              <Link href="/privacypolicy">Privacy Policy</Link>
+            </li>
+            <li className="px-2 hover:underline">
+              <Link href="/contactus">Contact Us</Link>
+            </li>
+          </ul>
+        </section>
+        <section className="flex items-center justify-between">
+          <article>&copy; 2022 Copyright, All rights reserved.</article>
+          <article>
+            <strong>Ephemerecloud</strong>
+          </article>
+        </section>
+      </footer>
     </main>
   );
 };
 
-export default MainWrapper
+export default MainWrapper;

@@ -40,3 +40,15 @@ export function lookupfile(identifier) {
 export function getdownloadUrl(identifier) {
   return getDownloadURL(ref(storage, identifier));
 }
+
+export function generateMetadata(paths, password, ttl) {
+  const identifier = generateIdentifier(7);
+
+  return {
+    identifier,
+    isSecured: password && password.length > 0,
+    password,
+    ttl: ttl || 15,
+    paths, 
+  };
+}

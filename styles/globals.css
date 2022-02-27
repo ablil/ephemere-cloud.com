@@ -1,27 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;600;700&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   a {
-    @apply cursor-pointer;
+    @apply cursor-pointer duration-300;
+  }
+
+  button {
+    @apply duration-300;
+  }
+
+  input {
+    @apply outline-none border-none;
+  }
+}
+
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .section-title {
+    @apply text-indigo-700 text-2xl;
   }
 }
 
 @layer components {
+  .feature {
+    @apply py-8;
+  }
+  .feature-content {
+    @apply text-center max-w-md;
+  }
+  .feature-icon {
+    @apply flex items-center justify-center;
+  }
   .custom-button {
     @apply bg-sky-600 hover:bg-sky-500 py-2 px-6 inline-block cursor-pointer my-4 rounded-xl text-sky-900;
   }
-  .feature {
-    @apply max-w-xs;
-  }
-  .feature h3 {
-    @apply flex items-center;
-  }
-  .feature h3 span {
-    @apply font-bold pl-2;
-  }
-
   .info {
     @apply flex flex-col mt-4;
   }
@@ -49,14 +69,21 @@ body {
   padding: 0;
   margin: 0;
   width: 100%;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  font-family: "Roboto", sans-serif;
-  overflow-x: hidden;
-  background-color: #0d0d0d;
+  font-family: "Fredoka", sans-serif;
+  background: #fff;
 }
 
-body {
-  margin-left: auto;
-  margin-right: auto;
+#brand {
+  font-family: "Roboto", sans-serif;
 }
+
+ /* Hide scrollbar for Chrome, Safari and Opera */
+ .hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+} 

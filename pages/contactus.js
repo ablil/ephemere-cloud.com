@@ -1,49 +1,64 @@
 import React from "react";
-import PageWrapper from "../components/layouts/pagewrapper";
+import MainWrapper from "../components/layouts/mainwrapper";
+import PageHeader from "../components/layouts/PageHeader";
 
 const contactus = () => {
   return (
-    <PageWrapper>
-      <div className="h-72 bg-gradient-to-r from-sky-500 to-indigo-500 flex justify-center items-center">
-        <h1 className="text-white text-5xl">Contact Us</h1>
-      </div>
+    <MainWrapper>
+      <PageHeader className="bg-gradient-to-r from-purple-500 to-pink-500">
+        <div className="pb-24">
+          <h1 className="text-center font-bold text-3xl">Contact Us !</h1>
+          <p>Do you wanna get in touch or request a new feature ... !</p>
+        </div>
+      </PageHeader>
 
-      <section className="relative -top-12 w-8/12 p-8 max-w-96 shadow-lg bg-black mx-auto">
-        <h1 className="text-center text-white text-3xl">Contact Us</h1>
-
+      <section className="max-w-md bg-white text-black relative -top-8 p-12 mx-auto shadow-2xl rounded-lg">
         <article>
-          <form className="flex flex-col" onSubmit="typescript;">
-            <input
-              className="border-b-2 outline-none border-white bg-transparent w-96 p-4 mx-auto"
-              type="text"
-              placeholder="name"
-            />
-            <input
-              type="email"
-              placeholder="email"
-              className="border-b-2 outline-none border-white bg-transparent w-96 p-4 mx-auto"
-            />
-            <input
-              type="text"
-              placeholder="subject"
-              className="border-b-2 outline-none border-white bg-transparent w-96 p-4 mx-auto"
-            />
-            <textarea
-              className="border-b-2 outline-none border-white bg-transparent w-96 p-4 mx-auto"
-              name="description"
-              id="description"
-              cols="30"
-              rows="10"
-              placeholder="description"
-            />
+          <form className="flex flex-col" onSubmit="javascript;">
+            <div className="border-b py-2">
+              <input
+                className="outline-none w-full pt-2"
+                type="text"
+                placeholder="name"
+              />
+            </div>
+            <div className="border-b py-2">
+              <input
+                type="email"
+                placeholder="email"
+                className="outline-none w-full pt-2"
+                required={true}
+              />
+            </div>
+            <div className="border-b py-2">
+              <input
+                type="text"
+                placeholder="subject"
+                className="outline-none w-full pt-2"
+              />
+            </div>
+            <div className="border-b py-2">
+              <textarea
+                className="outline-none w-full pt-2"
+                name="description"
+                id="description"
+                cols="30"
+                rows="5"
+                placeholder="description"
+              />
+            </div>
 
-            <button className="custom-button w-56 mx-auto" disabled={true}>
+            <button
+              disabled={true}
+              type="submit"
+              className="mx-auto mt-8 inline-block px-8 py-2 tracking-wide text-white ml-auto rounded-lg bg-black hover:opacity-80 shadow-lg"
+            >
               submit
             </button>
           </form>
         </article>
       </section>
-    </PageWrapper>
+    </MainWrapper>
   );
 };
 

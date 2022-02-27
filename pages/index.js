@@ -1,86 +1,80 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import PageWrapper from "../components/layouts/pagewrapper";
-import MainWrapper from '../components/layouts/mainwrapper'
-import Upload from "../components/Upload";
+import MainWrapper from "../components/layouts/mainwrapper";
+import PageHeader from "../components/layouts/PageHeader";
 
 export default function Home() {
-  const [downloadlink, setDownloadlink] = useState();
-  const [uploading, setUploading] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
-  const router = useRouter();
-
-  const beforeUpload = () => {
-    setUploading(true);
-    setUploaded(false);
-  };
-
-  const afterUpload = (link) => {
-    setDownloadlink(link);
-    setUploaded(true);
-    setUploading(false);
-  };
   return (
-    <PageWrapper>
-      <MainWrapper>
-        <Upload beforeUpload={beforeUpload} afterUpload={afterUpload} />
+    <MainWrapper>
+      <PageHeader>
+        <h1 className="text-7xl font-bold tracking-widest py-2">
+          Volatile cloud drive
+        </h1>
+        <p className="text-3xl max-w-lg mx-auto">
+          a place where you can share files with people, temporarly, securely
+          and automatically deleted
+        </p>
+        <article className="my-12">
+          <button className="inline-block px-8 py-2 tracking-wide text-black ml-auto rounded-lg bg-white hover:opacity-80 shadow-lg">
+            <Link href="/upload">upload!</Link>
+          </button>
+        </article>
+      </PageHeader>
 
-        {!uploading && uploaded && (
-          <article className="text-center mx-auto my-4">
-            <h1 className="text-sky-500">
-              Share this link with your friends !
-            </h1>
-            <div className="py-4 underline font-bold text-white">
-              <Link href={downloadlink || "/"}>{downloadlink}</Link>
+      <section className="mt-16 ">
+        <header className="text-center text-4xl mb-12">How it works !</header>
+        <div className="flex justify-evenly text-gray-500">
+          <article className="max-w-xs">
+            <div className="h-16 flex items-center">
+              <Image src="/icons/file.svg" height={80} width={80} alt="" />
             </div>
+            <h1 className="text-black mb-4">
+              1. <strong>Upload</strong>
+            </h1>
+            <p className="mb-4">
+              You can upload any type of file, and number of files and up to{" "}
+              <u>100MB</u>
+            </p>
           </article>
-        )}
-        <section className="bg-sky-900 p-4 text-white py-12">
-          <h2 className="text-center text-2xl mb-4">
-            What are the key feature of EphemereCloud
-          </h2>
-          <section className="flex flex-column lg:flex-row justify-center">
-            <article className="feature">
-              <h3>
-                <Image
-                  src="/images/filetype.png"
-                  height={70}
-                  width={70}
-                  alt=""
-                />
-                <span>File Type</span>
-              </h3>
-              <p>
-                Share any file type with your friend, and upload up to 100Mb.
-              </p>
-            </article>
-            <article className="feature">
-              <h3>
-                <Image
-                  src="/images/password.png"
-                  height={70}
-                  width={70}
-                  alt=""
-                />
-                <span>Security</span>
-              </h3>
-              <p>
-                Protect your files with password, only people with password can
-                access.
-              </p>
-            </article>
-            <article className="feature">
-              <h3>
-                <Image src="/images/cloud.png" height={70} width={70} alt="" />
-                <span>Privacy</span>
-              </h3>
-              <p>Set a time to remove the uploaded file automatically.</p>
-            </article>
-          </section>
-        </section>
-      </MainWrapper>
-    </PageWrapper>
+          <article className="max-w-xs">
+            <div className="h-16 flex items-center">
+              <Image src="/icons/lock.svg" height={80} width={80} alt="" />
+            </div>
+            <h1 className="text-black">
+              2. <strong>Secure</strong>
+            </h1>
+            <p>
+              You can protect your uploaded files with a <u>password</u>, so
+              only the people who have it, can access !
+            </p>
+          </article>
+          <article className="max-w-xs">
+            <div className="h-16 flex items-center">
+              <Image src="/icons/timer.svg" height={80} width={80} alt="" />
+            </div>
+            <h1 className="text-black">
+              3. <strong>Remove</strong>
+            </h1>
+            <p>
+              If you are afraid that you will forget about your uploaded file,
+              you can set a timer when it should be removed automatically and no
+              longer accessible.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section className="mt-16 mb-12 p-16 text-center text-white bg-gradient-to-r from-sky-500 to-indigo-500 max-w-6xl mx-auto ">
+        <header className="text-center text-3xl mb-12">
+          Upload using out Bot !
+        </header>
+        <Image src="/icons/telegram.svg" height={50} width={50} alt="" />
+        <p className="max-w-md mx-auto text-xl">
+          Send your files to Telegram bot account{" "}
+          <strong>@ephemerecloud</strong> and we will reply with a link
+          instantly
+        </p>
+      </section>
+    </MainWrapper>
   );
 }
