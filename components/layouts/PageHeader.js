@@ -6,7 +6,7 @@ const PageHeader = ({ children, className }) => {
   return (
     <section
       className={`pb-12 text-center bg-gradient-to-r from-cyan-500 to-blue-500 text-white ${
-        className || ""
+        className || "bg-gradient-to-r from-cyan-500 to-blue-500"
       }`}
     >
       <Navbar />

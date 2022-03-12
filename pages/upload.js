@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import {
   generateIdentifier,
   saveMetadata,
-  uploadFiles
+  uploadFiles,
 } from "../services/storage";
 
 const Upload = () => {
@@ -54,12 +54,25 @@ const Upload = () => {
         ttl: timer || 15,
         files: [],
         description: description || "n/a",
+        toExpire: expiration,
       };
 
       try {
-        const uploadedFiles = await uploadFiles(files);
+        const uploadedFiles = await uploadFiles(files, metadata.identifier);
         console.debug("uploaded files: ", uploadedFiles);
-        const paths = uploadedFiles.map((file) => file.metadata.fullPath);
+
+        const paths = uploadedFiles.map((file) => {
+          return {
+            path: file.metadata.fullPath,
+            size: 0,
+            filename: "",
+          };
+        });
+        files.forEach((file, index) => {
+          console.log(file);
+          paths[index].size = file.size || 0;
+          paths[index].filename = file.name || "";
+        });
         console.debug("paths:", paths);
 
         const uploadedMetadata = await saveMetadata({
@@ -156,7 +169,13 @@ const Upload = () => {
                 htmlFor="file"
                 className="inline-block ml-auto cursor-pointer"
               >
-                <Image src="/icons/plus.svg" height={30} width={30} alt="add" />
+                <Image
+                  src="/icons/plus.svg"
+                  title="add new file"
+                  height={30}
+                  width={30}
+                  alt="add"
+                />
               </label>
             </header>
 
@@ -167,13 +186,16 @@ const Upload = () => {
                   className="flex items-center my-2"
                 >
                   <div className="w-10/12">
-                    <div>{f.name}</div>
+                    <div className="truncate" title={f.name}>
+                      {f.name}
+                    </div>
                     <div className="text-gray-500 text-xs">
                       {calcFileSize(f.size).toFixed(2)} MB
                     </div>
                   </div>
                   <div className="cursor-pointer inline-block ml-auto w-2/12">
                     <Image
+                      title="click to remove"
                       onClick={() => removeFile(f)}
                       src="/icons/minus.svg"
                       height={20}

@@ -1,239 +1,185 @@
-import { enableIndexedDbPersistence } from "firebase/firestore";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Container from "../../components/layouts/container";
-import MainWrapper from "../../components/layouts/mainwrapper";
-import PageWrapper from "../../components/layouts/pagewrapper";
-import { getdownloadUrl, lookupfile } from "../../services/storage";
+import Navbar from "../../components/Navbar";
+import { downloadFile, listfiles, lookupfile } from "../../services/storage";
 
-const File = () => {
+const Download = () => {
   const router = useRouter();
   const { identifier } = router.query;
 
-  const [locked, setLocked] = useState(true);
-  const [removed, setRemoved] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-  const [password, setPassword] = useState("");
-  const [metadata, setMetadata] = useState({
-    name: "",
-    created: new Date(),
-    size: 0,
-    contentType: "application/octet-stream",
-    link: "#",
+  const [files, setFiles] = useState({
     password: "",
-    isSecured: false,
+    locked: false,
+    identifier: "",
+    files: [],
+    ttl: 15,
+    description: "n/a",
+    toExpire: new Date().toLocaleDateString(),
   });
+  const [loading, setLoading] = useState(true);
+  const [locked, setLocked] = useState(true);
+  const [password, setPassword] = useState("");
+  const [notFound, setNotFound] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [showWarning, setShowWarning] = useState(false);
+
+  const getDownloadLink = (file) => {
+    return `https://firebasestorage.googleapis.com/v0/b/temporary-drive.appspot.com/o/${identifier}%2F${file.replaceAll(
+      " ",
+      "%20"
+    )}?alt=media`;
+  };
 
   useEffect(() => {
-    setError(undefined);
-    if (identifier) {
+    if (identifier && identifier.length) {
       lookupfile(identifier)
-        .then((res) => {
-          console.log("metadata", res);
-          return res;
+        .then(async (res) => {
+          const data = res.data();
+          setFiles(data);
+          setLocked(data.locked);
+          setAttempts(0);
+          setLoading(false);
         })
-        .then((res) => {
-          setMetadata({
-            name: res.customMetadata.filename,
-            created: new Date(res.timeCreated) || new Date(),
-            ttl: parseInt(res.customMetadata.ttl),
-            size: res.size,
-            contentType: res.contentType,
-            password: res.customMetadata.password,
-            isSecured: res.customMetadata.isSecured === "true",
-          });
-          setLocked(res.customMetadata.isSecured === "true");
-          setRemoved(
-            calcualtettl(res.customMetadata.ttl, new Date(res.timeCreated)) <= 0
-          );
-        })
-        .then((_) => getdownloadUrl(identifier))
-        .then((url) => setMetadata((old) => ({ ...old, link: url })))
-        // .catch(() => router.push("/404"))
-        .finally(() => setLoading(false));
-    } else {
-      setError("sorry there is not file, it seems you are lost !");
-      setLoading(false);
+        .catch((err) => {
+          console.error(err);
+          setNotFound(true);
+          setAttempts(0);
+          setLoading(false);
+        });
     }
-    return () => {
-      setError("");
-      setLoading(true);
-    };
   }, [identifier]);
 
-  const unlockFile = (evt) => {
+  const unlock = (evt) => {
     evt.preventDefault();
-    setError("");
-    if (password === metadata.password) {
-      setLocked(false);
-    } else {
-      setError("Invalid password !");
+    if (password) {
+      if (password === files.password) {
+        setLocked(false);
+        setAttempts(0);
+        setShowWarning(false);
+      } else {
+        setLocked(true);
+        setAttempts((old) => old + 1);
+        setPassword("");
+      }
+
+      if (attempts >= 3) {
+        setShowWarning(true);
+      }
     }
   };
-  const calcualtettl = (ttl, created) => {
-    const now = new Date().getTime();
-    const expiration = created.getTime() + ttl * 60000;
-    console.log("now:", now.toString());
-    console.log("expiration: ", expiration.toString());
 
-    console.log(expiration - now);
+  return (
+    <main
+      id="upload"
+      className="w=screen h-screen text-white bg-gradient-to-r from-sky-500 to-indigo-500"
+    >
+      <Navbar />
 
-    return Math.floor(expiration - now) / 60000;
-  };
+      <header className="text-center py-4">
+        <h1 className="font-semibold text-5xl tracking-wide">
+          Share your files with friends
+        </h1>
+        <h2 className="text-3xl">Simple, fast and secure</h2>
+      </header>
+      <div className="mx-auto max-w-5xl flex text-black">
+        <section className="bg-white rounded-xl p-4 max-w-xl mx-auto m-4 w-full shadow-xl">
+          <h1 className="text-center text-2xl te">
+            {loading
+              ? "Loading ..."
+              : locked
+              ? "Unlock to access !"
+              : "You have access to shared files !"}
+          </h1>
 
-  if (loading) {
-    return (
-      <PageWrapper>
-        <Container>loading ...</Container>
-      </PageWrapper>
-    );
-  } else {
-    if (locked) {
-      return (
-        <PageWrapper>
-          <MainWrapper>
-            <Container>
-              <header
-                style={{
-                  fontSize: "1.5rem",
-                }}
-              >
-                <strong className="text-sky-600">File is locked !</strong>
-              </header>
-              <form onSubmit={unlockFile}>
-                <section>
-                  <h1
-                    style={{
-                      fontWeight: "normal",
-                      maxWidth: "25rem",
-                      margin: "auto",
-                    }}
-                  >
-                    This file is protected with a password, you need to type
-                    correct password to unlock
-                  </h1>
-                  <input
-                    style={{
-                      borderBottom: "1px solid white",
-                    }}
-                    className="outline-none border-none p-4 border-b-2 bg-transparent"
-                    type="password"
-                    value={password}
-                    placeholder="**************"
-                    onChange={(evt) => setPassword(evt.target.value)}
-                  />
-                  {error && (
-                    <div className="text-center text-red-400">{error}</div>
-                  )}
-                </section>
-
-                <footer>
-                  <div>
-                    <button className="custom-button">Unlock</button>
-                  </div>
-                </footer>
-              </form>
-            </Container>
-          </MainWrapper>
-        </PageWrapper>
-      );
-    } else if (removed) {
-      return (
-        <PageWrapper>
-          <MainWrapper>
-            <Container>
-              <header
-                style={{
-                  fontSize: "1.5rem",
-                }}
-              >
-                <strong>Not found !</strong>
-              </header>
-              <section>
-                <h1
-                  style={{
-                    fontWeight: "normal",
-                    maxWidth: "25rem",
-                    margin: "auto",
-                  }}
+          {!loading && locked && (
+            <form onSubmit={unlock}>
+              <p className="text-gray-500">
+                This file(s) is protected with a password, type correct one to
+                access.
+              </p>
+              <div className="border-b my-12 mx-4">
+                <input
+                  type="password"
+                  placeholder="unlock"
+                  className="block w-full py-1 outline-none"
+                  value={password}
+                  onChange={(evt) => setPassword(evt.target.value)}
+                  required={true}
+                  minLength={6}
+                />
+              </div>
+              <div className="w-full">
+                <button
+                  disabled={attempts >= 5}
+                  type="submit"
+                  className="m-auto block px-8 py-2 tracking-wide text-white ml-auto rounded-lg bg-black hover:opacity-80 shadow-lg"
                 >
-                  This file has been removed after reaching its end of life !
-                </h1>
-              </section>
-              <footer>
-                <div>
-                  <a href="/" className="custom-button">
-                    Upload new file
-                  </a>
+                  unlock
+                </button>
+              </div>
+              {showWarning && (
+                <div className="text-xs text-center pt-4 text-red-400">
+                  You have {5 - attempts} before you get banned !
                 </div>
-              </footer>
-            </Container>
-          </MainWrapper>
-        </PageWrapper>
-      );
-    } else {
-      return (
-        <PageWrapper>
-          <MainWrapper>
-            <Container>
-              <header
-                style={{
-                  fontSize: "1.5rem",
-                }}
-              >
-                <strong>Congratulations ! </strong>
-                <span style={{ fontWeight: "normal" }}>
-                  You have access to shared file
-                </span>
-              </header>
-              <section>
-                <article className="info">
-                  <span>Filename</span>
-                  <strong>{metadata.name}</strong>
-                </article>
-                <article className="info">
-                  <span>File Size</span>
-                  <strong>{metadata.size} bytes</strong>
-                </article>
-                <article className="info">
-                  <span>Content Type</span>
-                  <strong>{metadata.contentType}</strong>
-                </article>
-                <article className="info">
-                  <span>Uploaded</span>
-                  <strong>{metadata.created.toString()}</strong>
-                </article>
-                <article className="info">
-                  <span>Time left before removal</span>
-                  <strong>
-                    {calcualtettl(metadata.ttl, metadata.created)} minutes
-                  </strong>
-                </article>
-              </section>
+              )}
+            </form>
+          )}
 
-              <footer>
-                <div>
-                  <a
-                    href={metadata.link}
-                    className="custom-button"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Click to download
-                  </a>
-                </div>
-                <div>
-                  <Link href={"/"}>Upload new file</Link>
-                </div>
-              </footer>
-            </Container>
-          </MainWrapper>
-        </PageWrapper>
-      );
-    }
-  }
+          {!loading && !locked && (
+            <>
+              <article className="py-2">
+                <article>Total files:</article>
+                <article className="text-gray-500">
+                  {files.files.length} files
+                </article>
+              </article>
+              <article className="py-2">
+                <article>Available Until:</article>
+                <article className="text-gray-500">{files.toExpire}</article>
+              </article>
+              <article className="py-2">
+                <article>Description</article>
+                <article className="text-gray-500">{files.description}</article>
+              </article>
+              <article className="py-2">
+                <article>Files</article>
+                <article className="text-gray-500">
+                  {files.files.map((file) => (
+                    <article key={file.size} className="flex items-center my-2">
+                      <div className="w-10/12">
+                        <div className="truncate" title={file.filename}>
+                          {file.filename}
+                        </div>
+                        <div className="text-gray-500 text-xs">
+                          {(file.size / (1024 * 1024)).toFixed(2)} MB
+                        </div>
+                      </div>
+                      <div className="cursor-pointer flex-center inline-block ml-auto w-2/12">
+                        <a
+                          href={getDownloadLink(file.filename)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            title="click to download"
+                            src="/icons/download.svg"
+                            height={20}
+                            width={20}
+                            alt="remove"
+                          />
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </article>
+              </article>
+            </>
+          )}
+        </section>
+      </div>
+    </main>
+  );
 };
 
-export default File;
+export default Download;

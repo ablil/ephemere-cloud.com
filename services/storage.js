@@ -1,11 +1,9 @@
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import {
-  listAll,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  getMetadata,
+  getBlob, ref,
+  uploadBytes
 } from "firebase/storage";
-import { storage, firestore } from "./config";
+import { firestore, storage } from "./config";
 
 export function generateIdentifier(length) {
   var result = "";
@@ -18,37 +16,23 @@ export function generateIdentifier(length) {
   return result;
 }
 
-export function listfiles(path) {
-  return listAll(ref(storage, path)).then((res) => res.items);
+export function uploadFiles(files, identifier) {
+  const promises = [];
+  files.forEach((file) =>
+    promises.push(uploadBytes(ref(storage, `${identifier}/${file.name}`), file))
+  );
+
+  return Promise.all(promises);
 }
 
-export function uploadFile(file, metadata) {
-  return uploadBytes(ref(storage, metadata.identifier), file, {
-    customMetadata: {
-      filename: file.name,
-      password: metadata.password || "",
-      isSecured: metadata.password?.length > 0,
-      ttl: metadata.ttl || 15,
-    },
-  });
+export function saveMetadata(data) {
+  return setDoc(doc(firestore, "metadata", data.identifier), data);
 }
 
 export function lookupfile(identifier) {
-  return getMetadata(ref(storage, identifier));
+  return getDoc(doc(firestore, "metadata", identifier));
 }
 
-export function getdownloadUrl(identifier) {
-  return getDownloadURL(ref(storage, identifier));
-}
-
-export function generateMetadata(paths, password, ttl) {
-  const identifier = generateIdentifier(7);
-
-  return {
-    identifier,
-    isSecured: password && password.length > 0,
-    password,
-    ttl: ttl || 15,
-    paths, 
-  };
+export function downloadFile(path) {
+  return getBlob(ref(storage, path));
 }
