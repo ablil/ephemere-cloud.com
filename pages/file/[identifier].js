@@ -82,7 +82,7 @@ const Download = () => {
         </h1>
         <h2 className="text-3xl">Simple, fast and secure</h2>
       </header>
-      <div className="mx-auto max-w-5xl flex text-black">
+      <div className="mx-auto max-w-5xl flex text-black px-2">
         <section className="bg-white rounded-xl p-4 max-w-xl mx-auto m-4 w-full shadow-xl">
           <h1 className="text-center text-2xl te">
             {loading

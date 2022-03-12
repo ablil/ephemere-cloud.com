@@ -12,7 +12,7 @@ const faq = () => {
         </div>
       </PageHeader>
 
-      <section className="max-w-md bg-white text-black relative -top-8 p-12 mx-auto shadow-2xl rounded-lg">
+      <section className="max-w-md bg-white text-black relative -top-8 p-12 mx-auto md:shadow-2xl rounded-lg">
         <article>
           <div className="my-8">
             <strong>How do I use EphemereCloud ?</strong>

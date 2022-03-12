@@ -21,10 +21,10 @@ export default function Home() {
         </article>
       </PageHeader>
 
-      <section className="mt-16 ">
+      <section className="mt-16 max-w-6xl mx-auto">
         <header className="text-center text-4xl mb-12">How it works !</header>
-        <div className="flex justify-evenly text-gray-500">
-          <article className="max-w-xs">
+        <div className="flex flex-col md:flex-row justify-evenly text-gray-500">
+          <article className="max-w-xs mx-auto md:mx-2 my-2">
             <div className="h-16 flex items-center">
               <Image src="/icons/file.svg" height={80} width={80} alt="" />
             </div>
@@ -36,7 +36,7 @@ export default function Home() {
               <u>100MB</u>
             </p>
           </article>
-          <article className="max-w-xs">
+          <article className="max-w-xs mx-auto md:mx-2 my-2">
             <div className="h-16 flex items-center">
               <Image src="/icons/lock.svg" height={80} width={80} alt="" />
             </div>
@@ -48,7 +48,7 @@ export default function Home() {
               only the people who have it, can access !
             </p>
           </article>
-          <article className="max-w-xs">
+          <article className="max-w-xs mx-auto md:mx-2 my-2">
             <div className="h-16 flex items-center">
               <Image src="/icons/timer.svg" height={80} width={80} alt="" />
             </div>

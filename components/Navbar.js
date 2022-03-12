@@ -8,7 +8,7 @@ const Navbar = () => {
       <article>
         <Brand />
       </article>
-      <ul className="flex items-center">
+      <ul className="hidden md:flex items-center">
         <li className="px-2 hover:underline">
           <Link href="/faq">FAQ</Link>
         </li>

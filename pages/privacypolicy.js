@@ -9,14 +9,11 @@ const privacypolicy = () => {
       <PageHeader className="bg-gradient-to-r from-violet-500 to-fuchsia-500">
         <div className="pb-24">
           <h1 className="text-center font-bold text-3xl">Privacy Policy</h1>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque,
-            repellat?
-          </p>
+          <p></p>
         </div>
       </PageHeader>
 
-      <section className="max-w-md bg-white text-black relative -top-8 p-12 mx-auto shadow-2xl rounded-lg">
+      <section className="max-w-md bg-white text-black relative -top-8 p-12 mx-auto md:shadow-2xl rounded-lg">
         <strong className="py-2 block">
           We do not read your data or collect personal information
         </strong>

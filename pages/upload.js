@@ -16,6 +16,8 @@ const Upload = () => {
   const [timer, setTimer] = useState(15);
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("ephemerecloud.com/file/jsd98lkas");
+  const [displayError, setDisplayError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const totalSize = useMemo(
     () =>
@@ -45,6 +47,7 @@ const Upload = () => {
   const handleUpload = (evt) => {
     evt.preventDefault();
     setUploading(true);
+    setErrorMessage("");
 
     new Promise(async (resolve, reject) => {
       const metadata = {
@@ -94,7 +97,10 @@ const Upload = () => {
         setUploading(false);
       })
       .catch((err) => {
-        console.error(err);
+        setErrorMessage(
+          "There was an error and your files(s) could not be uploaded. Try refreshing the page !"
+        );
+        setDisplayError(true);
         setUploaded(false);
         setUploading(false);
       });
@@ -128,15 +134,15 @@ const Upload = () => {
       />
       {/* hidden file input end */}
       <header className="text-center py-4">
-        <h1 className="font-semibold text-5xl tracking-wide">
+        <h1 className="px-2 font-semibold text-5xl tracking-wide">
           Share your files with friends
         </h1>
         <h2 className="text-3xl">Simple, fast and secure</h2>
       </header>
       {/* upload files */}
       {!fileChanged && !uploaded && !uploading && (
-        <div className="border-4 border-dashed border-white max-w-2xl rounded-3xl mx-auto">
-          <section className="bg-white text-indigo-900 text-center max-w-2xl m-4 p-36 rounded-3xl shadow-xl">
+        <div className="md:border-4 border-dashed border-white max-w-2xl rounded-3xl mx-auto">
+          <section className="bg-white text-indigo-900 text-center max-w-2xl m-4 p-4 md:p-36 rounded-3xl shadow-xl">
             <label
               className="cursor-pointer"
               title="click to upload"
@@ -158,7 +164,7 @@ const Upload = () => {
       )}
       {/* type file metadata */}
       {fileChanged && !uploaded && !uploading && (
-        <div className="mx-auto max-w-5xl flex text-black">
+        <div className="mx-auto max-w-5xl flex flex-col md:flex-row items-center text-black">
           <section className="bg-white rounded-xl p-4 max-w-sm m-4 w-full shadow-xl">
             <header className="border border-gray-500 rounded-lg p-2 flex items-center">
               <span className="text-xl text-black">{files.length} Files</span>
@@ -210,7 +216,7 @@ const Upload = () => {
 
           <form
             onSubmit={handleUpload}
-            className="bg-white rounded-xl h-96 p-4 max-w-ls text-black m-4 w-full shadow-xl"
+            className="bg-white rounded-xl h-96 p-4 max-w-sm md:max-w-ls text-black m-4 w-full shadow-xl"
           >
             <article className="py-4">
               <label htmlFor="password" className="block">
@@ -307,6 +313,16 @@ const Upload = () => {
               Your file(s) is uploading right now. Just give us a second to
               finish your upload.
             </p>
+          </section>
+        </div>
+      )}
+
+      {/* error */}
+      {displayError && (
+        <div className="mx-auto max-w-md flex text-black">
+          <section className="bg-white rounded-xl p-10 max-w-sm m-4 w-full shadow-xl text-center">
+            <h1 className="text-red-400 text-3xl my-4">We are sorry!</h1>
+            <p>{errorMessage}</p>
           </section>
         </div>
       )}
