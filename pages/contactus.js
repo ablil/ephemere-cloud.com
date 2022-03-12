@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import MainWrapper from "../components/layouts/mainwrapper";
 import PageHeader from "../components/layouts/PageHeader";
+import { submitform } from "../services/storage";
 
-const contactus = () => {
+const Contactus = () => {
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    description: "",
+  });
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+
+    submitform(data)
+      .then((res) => {
+        setMessage("submited, thank you for you input.");
+        // setData({ name: "", email: "", subject: "", description: "" });
+      })
+      .catch((err) => {
+        // setError("failed to submit, please try again");
+      });
+  };
   return (
     <MainWrapper>
       <PageHeader className="bg-gradient-to-r from-purple-500 to-pink-500">
@@ -14,12 +33,16 @@ const contactus = () => {
 
       <section className="max-w-md bg-white text-black relative -top-8 p-12 mx-auto md:shadow-2xl rounded-lg">
         <article>
-          <form className="flex flex-col" onSubmit="javascript;">
+          <form className="flex flex-col" onSubmit={handleSubmit}>
             <div className="border-b py-2">
               <input
                 className="outline-none w-full pt-2"
                 type="text"
                 placeholder="name"
+                value={data.name}
+                onChange={(evt) =>
+                  setData((old) => ({ ...old, name: evt.target.value }))
+                }
               />
             </div>
             <div className="border-b py-2">
@@ -28,13 +51,22 @@ const contactus = () => {
                 placeholder="email"
                 className="outline-none w-full pt-2"
                 required={true}
+                value={data.email}
+                onChange={(evt) =>
+                  setData((old) => ({ ...old, email: evt.target.value }))
+                }
               />
             </div>
             <div className="border-b py-2">
               <input
                 type="text"
                 placeholder="subject"
+                required={true}
                 className="outline-none w-full pt-2"
+                value={data.subject}
+                onChange={(evt) =>
+                  setData((old) => ({ ...old, subject: evt.target.value }))
+                }
               />
             </div>
             <div className="border-b py-2">
@@ -45,11 +77,14 @@ const contactus = () => {
                 cols="30"
                 rows="5"
                 placeholder="description"
+                value={data.description}
+                onChange={(evt) =>
+                  setData((old) => ({ ...old, description: evt.target.value }))
+                }
               />
             </div>
 
             <button
-              disabled={true}
               type="submit"
               className="mx-auto mt-8 inline-block px-8 py-2 tracking-wide text-white ml-auto rounded-lg bg-black hover:opacity-80 shadow-lg"
             >
@@ -62,4 +97,4 @@ const contactus = () => {
   );
 };
 
-export default contactus;
+export default Contactus;

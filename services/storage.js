@@ -1,8 +1,5 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import {
-  getBlob, ref,
-  uploadBytes
-} from "firebase/storage";
+import { getBlob, ref, uploadBytes } from "firebase/storage";
 import { firestore, storage } from "./config";
 
 export function generateIdentifier(length) {
@@ -35,4 +32,8 @@ export function lookupfile(identifier) {
 
 export function downloadFile(path) {
   return getBlob(ref(storage, path));
+}
+
+export function submitform(data) {
+  return setDoc(doc(firestore, "form", `${data.email}-${data.subject}`), data);
 }
