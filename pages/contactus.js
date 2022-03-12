@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MainWrapper from "../components/layouts/mainwrapper";
 import PageHeader from "../components/layouts/PageHeader";
+import { trackSubmitForm } from "../lib/gtm";
 import { submitform } from "../services/storage";
 
 const Contactus = () => {
@@ -12,6 +13,7 @@ const Contactus = () => {
   });
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    trackSubmitForm();
 
     submitform(data)
       .then((res) => {

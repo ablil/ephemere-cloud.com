@@ -2,8 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import MainWrapper from "../components/layouts/mainwrapper";
 import PageHeader from "../components/layouts/PageHeader";
+import * as gtag from "../lib/gtag";
+import { trackUpload } from "../lib/gtm";
 
 export default function Home() {
+  const ghandleUploadClick = (evt) => {
+    console.log("click on upload");
+    gtag.event({
+      action: "click_upload",
+      category: "",
+      label: "",
+      value: "",
+    });
+  };
   return (
     <MainWrapper>
       <PageHeader>
@@ -15,8 +26,13 @@ export default function Home() {
           and automatically deleted
         </p>
         <article className="my-12">
-          <button className="inline-block px-8 py-2 tracking-wide text-black ml-auto rounded-lg bg-white hover:opacity-80 shadow-lg">
-            <Link href="/upload">upload!</Link>
+          <button
+            onClick={ghandleUploadClick}
+            className="inline-block px-8 py-2 tracking-wide text-black ml-auto rounded-lg bg-white hover:opacity-80 shadow-lg"
+          >
+            <Link href="/upload" onClick={() => trackUpload("click_upload", "")}>
+              upload!
+            </Link>
           </button>
         </article>
       </PageHeader>

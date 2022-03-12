@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { trackVisitFooterLinks } from "../../lib/gtm";
 
 const MainWrapper = ({ children }) => {
   return (
@@ -9,13 +10,25 @@ const MainWrapper = ({ children }) => {
         <section className="mx-auto flex-center">
           <ul className="flex items-center">
             <li className="px-2 hover:underline">
-              <Link href="/faq">FAQ</Link>
+              <Link href="/faq" onClick={() => trackVisitFooterLinks("faq")}>
+                FAQ
+              </Link>
             </li>
             <li className="px-2 hover:underline">
-              <Link href="/privacypolicy">Privacy Policy</Link>
+              <Link
+                href="/privacypolicy"
+                onClick={() => trackVisitFooterLinks("privacy-policy")}
+              >
+                Privacy Policy
+              </Link>
             </li>
             <li className="px-2 hover:underline">
-              <Link href="/contactus">Contact Us</Link>
+              <Link
+                href="/contactus"
+                onClick={() => trackVisitFooterLinks("contact-us")}
+              >
+                Contact Us
+              </Link>
             </li>
           </ul>
         </section>

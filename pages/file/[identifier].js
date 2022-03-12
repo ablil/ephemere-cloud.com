@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
+import { trackDownload } from "../../lib/gtm";
 import { downloadFile, listfiles, lookupfile } from "../../services/storage";
 
 const Download = () => {
@@ -57,10 +58,12 @@ const Download = () => {
         setLocked(false);
         setAttempts(0);
         setShowWarning(false);
+        trackDownload("successfull_unlock", "");
       } else {
         setLocked(true);
         setAttempts((old) => old + 1);
         setPassword("");
+        trackDownload("unsuccesfull_unlock", attempts);
       }
 
       if (attempts >= 3) {
@@ -160,6 +163,7 @@ const Download = () => {
                           href={getDownloadLink(file.filename)}
                           target="_blank"
                           rel="noreferrer"
+                          onClick={() => trackDownload("click_on_download", "")}
                         >
                           <Image
                             title="click to download"

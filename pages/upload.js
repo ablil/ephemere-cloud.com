@@ -6,6 +6,8 @@ import {
   saveMetadata,
   uploadFiles,
 } from "../services/storage";
+import * as gtag from "../lib/gtag";
+import { trackUpload } from "../lib/gtm";
 
 const Upload = () => {
   const [fileChanged, setFileChanged] = useState(false);
@@ -42,12 +44,15 @@ const Upload = () => {
       setFiles((old) => old.concat(Array.from(files)));
       setFileChanged(true);
     }
+
+    trackUpload("file_changed", files.length);
   };
 
   const handleUpload = (evt) => {
     evt.preventDefault();
     setUploading(true);
     setErrorMessage("");
+    trackUpload("submit_upload", "");
 
     new Promise(async (resolve, reject) => {
       const metadata = {
@@ -116,7 +121,9 @@ const Upload = () => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(link || "");
+    trackUpload("copy_to_upload", "");
   };
+
   return (
     <main
       id="upload"
@@ -147,6 +154,7 @@ const Upload = () => {
               className="cursor-pointer"
               title="click to upload"
               htmlFor="file"
+              onClick={() => trackUpload("drop_it_here", "")}
             >
               <Image
                 src="/icons/upload.svg"
@@ -294,6 +302,7 @@ const Upload = () => {
                 onClick={copyToClipboard}
               >
                 <Image
+                  title="copy to clipboard"
                   src="/icons/clipboard.svg"
                   height={25}
                   width={25}
