@@ -1,8 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
 import React, { useMemo, useState } from "react";
-import Brand from "../components/Brand";
 import Navbar from "../components/Navbar";
+import {
+  generateIdentifier,
+  saveMetadata,
+  uploadFiles
+} from "../services/storage";
 
 const Upload = () => {
   const [fileChanged, setFileChanged] = useState(false);
@@ -41,8 +44,47 @@ const Upload = () => {
 
   const handleUpload = (evt) => {
     evt.preventDefault();
-    setUploaded(true);
-    setFileChanged(false);
+    setUploading(true);
+
+    new Promise(async (resolve, reject) => {
+      const metadata = {
+        identifier: generateIdentifier(7),
+        password: password || "",
+        locked: password?.length > 0 || false,
+        ttl: timer || 15,
+        files: [],
+        description: description || "n/a",
+      };
+
+      try {
+        const uploadedFiles = await uploadFiles(files);
+        console.debug("uploaded files: ", uploadedFiles);
+        const paths = uploadedFiles.map((file) => file.metadata.fullPath);
+        console.debug("paths:", paths);
+
+        const uploadedMetadata = await saveMetadata({
+          ...metadata,
+          files: paths,
+        });
+        console.debug("uploaded metadata", uploadedMetadata);
+
+        resolve(metadata.identifier);
+      } catch (error) {
+        reject(error);
+      }
+    })
+      .then((identifier) => {
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        setLink(`${protocol}//${host}/file/${identifier}`);
+        setUploaded(true);
+        setUploading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setUploaded(false);
+        setUploading(false);
+      });
   };
 
   const calcFileSize = (siteInBytes) => {
@@ -62,7 +104,6 @@ const Upload = () => {
       className="w=screen h-screen text-white bg-gradient-to-r from-sky-500 to-indigo-500"
     >
       <Navbar />
-
       {/* hidden file input start */}
       <input
         type="file"
@@ -73,15 +114,14 @@ const Upload = () => {
         multiple={true}
       />
       {/* hidden file input end */}
-
       <header className="text-center py-4">
         <h1 className="font-semibold text-5xl tracking-wide">
           Share your files with friends
         </h1>
         <h2 className="text-3xl">Simple, fast and secure</h2>
       </header>
-
-      {!fileChanged && !uploaded && (
+      {/* upload files */}
+      {!fileChanged && !uploaded && !uploading && (
         <div className="border-4 border-dashed border-white max-w-2xl rounded-3xl mx-auto">
           <section className="bg-white text-indigo-900 text-center max-w-2xl m-4 p-36 rounded-3xl shadow-xl">
             <label
@@ -103,8 +143,8 @@ const Upload = () => {
           </section>
         </div>
       )}
-
-      {fileChanged && (
+      {/* type file metadata */}
+      {fileChanged && !uploaded && !uploading && (
         <div className="mx-auto max-w-5xl flex text-black">
           <section className="bg-white rounded-xl p-4 max-w-sm m-4 w-full shadow-xl">
             <header className="border border-gray-500 rounded-lg p-2 flex items-center">
@@ -207,7 +247,7 @@ const Upload = () => {
           </form>
         </div>
       )}
-
+      {/* uploaded successfully */}
       {uploaded && (
         <div className="mx-auto max-w-md flex text-black">
           <section className="bg-white rounded-xl p-10 max-w-sm m-4 w-full shadow-xl text-center">
@@ -233,6 +273,18 @@ const Upload = () => {
                 />
               </span>
             </footer>
+          </section>
+        </div>
+      )}
+      {/* loading */}
+      {uploading && (
+        <div className="mx-auto max-w-md flex text-black">
+          <section className="bg-white rounded-xl p-10 max-w-sm m-4 w-full shadow-xl text-center">
+            <h1 className="text-black text-3xl my-4">Just a minute ...</h1>
+            <p>
+              Your file(s) is uploading right now. Just give us a second to
+              finish your upload.
+            </p>
           </section>
         </div>
       )}
