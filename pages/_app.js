@@ -1,8 +1,9 @@
-import "../styles/globals.css";
-import { useEffect } from "react";
-import Script from "next/script";
+import { DefaultSeo } from "next-seo";
 import { useRouter } from "next/router";
+import Script from "next/script";
+import { useEffect } from "react";
 import * as gtag from "../lib/gtag";
+import "../styles/globals.css";
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -18,6 +19,11 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <>
+      <DefaultSeo
+        title="Ephemere cloud - Share files with your friend in volatile cloud"
+        description="Ephemere cloud is a place where you can share files with people, temporarly, securely and automatically deleted"
+        defaultTitle="Ephemere cloud"
+      />
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
         strategy="afterInteractive"

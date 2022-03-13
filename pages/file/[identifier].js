@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { trackDownload } from "../../lib/gtm";
-import { downloadFile, listfiles, lookupfile } from "../../services/storage";
+import { lookupfile } from "../../services/storage";
 
 const Download = () => {
   const router = useRouter();

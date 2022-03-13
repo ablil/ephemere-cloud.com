@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MainWrapper from "../components/layouts/mainwrapper";
 import PageHeader from "../components/layouts/PageHeader";
+import Socialmedia from "../components/Socialmedia";
 import * as gtag from "../lib/gtag";
 import { trackUpload } from "../lib/gtm";
 
@@ -15,12 +16,14 @@ export default function Home() {
       value: "",
     });
   };
+
   return (
     <MainWrapper>
       <PageHeader>
         <h1 className="text-7xl font-bold tracking-widest py-2">
           Volatile cloud drive
         </h1>
+        <Socialmedia />
         <p className="text-3xl max-w-lg mx-auto">
           a place where you can share files with people, temporarly, securely
           and automatically deleted
@@ -30,7 +33,10 @@ export default function Home() {
             onClick={ghandleUploadClick}
             className="inline-block px-8 py-2 tracking-wide text-black ml-auto rounded-lg bg-white hover:opacity-80 shadow-lg"
           >
-            <Link href="/upload" onClick={() => trackUpload("click_upload", "")}>
+            <Link
+              href="/upload"
+              onClick={() => trackUpload("click_upload", "")}
+            >
               upload!
             </Link>
           </button>
