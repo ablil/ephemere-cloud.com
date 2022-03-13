@@ -1,34 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ephemerecloud - The Volatile cloud drive (Beta version)
+Ephemere cloud let you share files with people in a temporary cloud drive, once you upload a file, a link will be generated to share with people.
+You can protect your file with a password, only those who have permission can access, and you can also set a timer for autoremoval.
 
-## Getting Started
+**still in beta version**
 
-First, run the development server:
+**online**: https://ephemere-cloud.com
 
-```bash
-npm run dev
-# or
-yarn dev
+![image](https://user-images.githubusercontent.com/25986426/158059992-7980ac23-3adf-4f62-b9c8-30b0111e33a2.png)
+
+## How to use it
+* visit the online website
+* Click upload
+* Drop your files
+* Set a password, timer, description ...
+* Click on Upload
+* Copy the generated link
+* Share with your friends.
+
+
+## Feature
+- [x] Upload mutliple files
+- [x] Protect files with password
+- [x] Autoremoval with timer
+- [ ] Telegram bot
+- [ ] Mobile app
+
+
+## For developers
+In order to run this locally in you machine, check the following pre-requesits:
+* You should setup a project in firebase (storage & firestore)
+* You are familiar with Nextjs & Tailwindcss
+
+**Run Locally**:
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+> git clone https://github.com/ablil/ephemerecloud
+> cd ephemerecloud
+> yarn
+> yarn dev
+```
