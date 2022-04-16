@@ -1,8 +1,9 @@
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { trackUpload } from "../lib/gtm";
+import { authenticate } from "../services/auth";
 import {
   generateIdentifier,
   saveMetadata,
@@ -37,6 +38,10 @@ const Upload = () => {
       ),
     [timer]
   );
+
+  useEffect(() => {
+    authenticate();
+  }, []);
 
   const handleFilechange = (evt) => {
     const files = evt.target.files;
