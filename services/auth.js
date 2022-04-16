@@ -1,6 +1,5 @@
-import { getAuth, signInAnonymously } from "firebase/auth";
-
-const auth = getAuth();
+import { signInAnonymously } from "firebase/auth";
+import { auth } from "./config";
 
 export function authenticate() {
   if (!localStorage.getItem("loggedIn")) {
