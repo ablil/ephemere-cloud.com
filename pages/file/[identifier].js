@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { trackDownload } from "../../lib/gtm";
+import { authenticate } from "../../services/auth";
 import { lookupfile } from "../../services/storage";
 
 const Download = () => {
@@ -33,6 +34,7 @@ const Download = () => {
   };
 
   useEffect(() => {
+    authenticate();
     if (identifier && identifier.length) {
       lookupfile(identifier)
         .then(async (res) => {
