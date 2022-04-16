@@ -173,7 +173,7 @@ const Upload = () => {
           </div>
         )}
         {/* type file metadata */}
-        {fileChanged && !uploaded && !uploading && (
+        {fileChanged && !uploaded && !uploading && !displayError && (
           <div className="mx-auto max-w-5xl flex flex-col md:flex-row items-center text-black">
             <section className="bg-white rounded-xl p-4 max-w-sm m-4 w-full shadow-xl">
               <header className="border border-gray-500 rounded-lg p-2 flex items-center">
