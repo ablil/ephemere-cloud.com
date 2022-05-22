@@ -1,8 +1,9 @@
 {
   "name": "ephemerecloude",
   "workspaces": [
+    "core",
     "web",
-    "core"
+    "web"
   ],
   "private": true,
   "version": "1.0.0",
