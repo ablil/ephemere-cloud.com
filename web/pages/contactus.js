@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import MainWrapper from "../components/layouts/mainwrapper";
 import PageHeader from "../components/layouts/PageHeader";
 import { trackSubmitForm } from "../lib/gtm";
-import { submitform } from "../services/storage";
+import { submitform } from "core";
 
 const Contactus = () => {
   const [data, setData] = useState({

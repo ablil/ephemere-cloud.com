@@ -3,12 +3,8 @@ import Image from "next/image";
 import React, { useMemo, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { trackUpload } from "../lib/gtm";
-import { authenticate } from "../services/auth";
-import {
-  generateIdentifier,
-  saveMetadata,
-  uploadFiles,
-} from "../services/storage";
+import { authenticate } from "@ephemerecloud/core";
+import { generateIdentifier, saveMetadata, uploadFiles } from "core";
 
 const Upload = () => {
   const [fileChanged, setFileChanged] = useState(false);

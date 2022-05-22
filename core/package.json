@@ -1,0 +1,10 @@
+{
+  "name": "@ephemerecloud/core",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "description": "Core logic and connection with firebase",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^9.8.1"
+  }
+}
