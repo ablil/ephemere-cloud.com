@@ -72,7 +72,6 @@ const Upload = () => {
 
       try {
         const uploadedFiles = await uploadFiles(files, metadata.identifier);
-        console.debug("uploaded files: ", uploadedFiles);
 
         const paths = uploadedFiles.map((file) => {
           return {
@@ -94,7 +93,7 @@ const Upload = () => {
         });
         console.debug("uploaded metadata", uploadedMetadata);
 
-        resolve(metadata.identifier);
+        resolve(metadata.randomd);
       } catch (error) {
         reject(error);
       }
@@ -151,6 +150,7 @@ const Upload = () => {
           <h1 className="px-2 font-semibold text-5xl tracking-wide">
             Share your files with friends
           </h1>
+          helofriend
           <h2 className="text-3xl">Simple, fast and secure</h2>
         </header>
         {/* upload files */}
