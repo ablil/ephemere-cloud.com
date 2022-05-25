@@ -360,6 +360,13 @@ const Upload = () => {
                   />
                 </span>
               </footer>
+
+              <article>
+                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                <a href="/" className="text-gray-500 underline" >
+                  Upload another file(s)
+                </a>
+              </article>
             </section>
           </div>
         )}
