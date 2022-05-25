@@ -8,7 +8,6 @@ import { trackUpload } from "../lib/gtm";
 
 export default function Home() {
   const ghandleUploadClick = (evt) => {
-    console.log("click on upload");
     gtag.event({
       action: "click_upload",
       category: "",

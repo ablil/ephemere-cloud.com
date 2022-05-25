@@ -1,6 +1,6 @@
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import { trackUpload } from "../lib/gtm";
 import { authenticate } from "../services/auth";
@@ -21,6 +21,7 @@ const Upload = () => {
   const [link, setLink] = useState("ephemerecloud.com/file/jsd98lkas");
   const [displayError, setDisplayError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [dragging, setDragging] = useState(false);
 
   const totalSize = useMemo(
     () =>
@@ -41,7 +42,44 @@ const Upload = () => {
 
   useEffect(() => {
     authenticate();
+
+    let div = document.getElementById("draganddrop");
+    div.addEventListener("dragenter", handleDragIn);
+    div.addEventListener("dragleave", handleDragOut);
+    div.addEventListener("dragover", handleDragOver);
+    div.addEventListener("drop", handleDrop);
+
   }, []);
+
+  const handleDragIn = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    if (evt.dataTransfer.items && evt.dataTransfer.items.length > 0) {
+      setDragging(true);
+    }
+  };
+
+  const handleDragOut = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    setDragging(false);
+  };
+
+  const handleDragOver = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+  };
+
+  const handleDrop = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    const files = evt.dataTransfer.files;
+    setFiles((old) => old.concat(Array.from(files)));
+    setFileChanged(true);
+  };
 
   const handleFilechange = (evt) => {
     const files = evt.target.files;
@@ -72,7 +110,6 @@ const Upload = () => {
 
       try {
         const uploadedFiles = await uploadFiles(files, metadata.identifier);
-        console.debug("uploaded files: ", uploadedFiles);
 
         const paths = uploadedFiles.map((file) => {
           return {
@@ -82,17 +119,14 @@ const Upload = () => {
           };
         });
         files.forEach((file, index) => {
-          console.log(file);
           paths[index].size = file.size || 0;
           paths[index].filename = file.name || "";
         });
-        console.debug("paths:", paths);
 
         const uploadedMetadata = await saveMetadata({
           ...metadata,
           files: paths,
         });
-        console.debug("uploaded metadata", uploadedMetadata);
 
         resolve(metadata.identifier);
       } catch (error) {
@@ -155,7 +189,11 @@ const Upload = () => {
         </header>
         {/* upload files */}
         {!fileChanged && !uploaded && !uploading && (
-          <div className="md:border-4 border-dashed border-white max-w-2xl rounded-3xl mx-auto">
+          <div
+            id="draganddrop"
+            style={{ opacity: dragging ? 0.5 : 1 }}
+            className="md:border-4 border-dashed border-white max-w-2xl rounded-3xl mx-auto"
+          >
             <section className="bg-white text-indigo-900 text-center max-w-2xl m-4 p-4 md:p-36 rounded-3xl shadow-xl">
               <label
                 className="cursor-pointer"
