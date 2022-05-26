@@ -16,6 +16,15 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="px-2 hover:underline">
+          <a
+            href="https://github.com/ablil/ephemere-cloud.com/issues"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Issues
+          </a>
+        </li>
+        <li className="px-2 hover:underline">
           <Link
             href="/privacypolicy"
             onClick={() => trackVisitFooterLinks("privacy-policy")}
