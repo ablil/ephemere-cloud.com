@@ -40,6 +40,11 @@ const Upload = () => {
     [timer]
   );
 
+  const isUploadAllowed = useMemo(
+    () => totalSize <= 50 && files.length > 0,
+    [totalSize, files]
+  );
+
   useEffect(() => {
     authenticate();
 
@@ -221,8 +226,12 @@ const Upload = () => {
             <section className="bg-white rounded-xl p-4 max-w-sm m-4 w-full shadow-xl">
               <header className="border border-gray-500 rounded-lg p-2 flex items-center">
                 <span className="text-xl text-black">{files.length} Files</span>
-                <span className="text-gray-500 pl-2">
-                  {totalSize.toFixed(2)} MB
+                <span
+                  className={`text-gray-500 pl-2 ${
+                    totalSize > 50 ? "text-red-400" : ""
+                  }`}
+                >
+                  {totalSize.toFixed(2)}MB / 50Mb
                 </span>
                 <label
                   htmlFor="file"
@@ -319,8 +328,9 @@ const Upload = () => {
               <footer className="w-full p-4 bg-indigo-100 rounded-lg flex items-center">
                 <span className="text-gray-500">Expires on {expiration}</span>
                 <button
+                  disabled={!isUploadAllowed}
                   type="submit"
-                  className="inline-block px-4 py-2 font-semibold text-white ml-auto rounded-lg bg-indigo-500 hover:bg-indigo-600"
+                  className="inline-block px-4 py-2 font-semibold text-white ml-auto rounded-lg bg-indigo-500 hover:bg-indigo-600 disabled:bg-transparent"
                 >
                   Upload
                 </button>
