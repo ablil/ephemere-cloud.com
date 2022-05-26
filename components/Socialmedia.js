@@ -14,7 +14,7 @@ import {
 import { trackShareOnSocialMedia } from "../lib/gtm";
 
 const quote = "Use Ephemere cloud to share files with your friends";
-const url = "https://ephemere-cloud.vercel.app/";
+const url = "https://ephemere-cloud.com/";
 const hashtag = "#ephemerecloud";
 const Socialmedia = () => {
   return (
