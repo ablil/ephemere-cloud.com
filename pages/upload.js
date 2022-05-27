@@ -7,7 +7,7 @@ import { authenticate } from "../services/auth";
 import {
   generateIdentifier,
   saveMetadata,
-  uploadFiles,
+  uploadFile,
 } from "../services/storage";
 
 const Upload = () => {
@@ -22,6 +22,7 @@ const Upload = () => {
   const [displayError, setDisplayError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [dragging, setDragging] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   const totalSize = useMemo(
     () =>
@@ -96,13 +97,14 @@ const Upload = () => {
     trackUpload("file_changed", files.length);
   };
 
-  const handleUpload = (evt) => {
+  const handleUpload = async (evt) => {
     evt.preventDefault();
     setUploading(true);
     setErrorMessage("");
+    setCounter(0)
     trackUpload("submit_upload", "");
 
-    new Promise(async (resolve, reject) => {
+    try {
       const metadata = {
         identifier: generateIdentifier(7),
         password: password || "",
@@ -113,46 +115,33 @@ const Upload = () => {
         toExpire: expiration,
       };
 
-      try {
-        const uploadedFiles = await uploadFiles(files, metadata.identifier);
-
-        const paths = uploadedFiles.map((file) => {
-          return {
-            path: file.metadata.fullPath,
-            size: 0,
-            filename: "",
-          };
-        });
-        files.forEach((file, index) => {
-          paths[index].size = file.size || 0;
-          paths[index].filename = file.name || "";
+      for (let file of files) {
+        const uploaded = await uploadFile(file, metadata.identifier);
+        console.log({ file, uploaded });
+        metadata.files.push({
+          path: uploaded.metadata.fullPath,
+          size: file.size || 0,
+          filename: file.name || "",
         });
 
-        const uploadedMetadata = await saveMetadata({
-          ...metadata,
-          files: paths,
-        });
-
-        resolve(metadata.identifier);
-      } catch (error) {
-        reject(error);
+        setCounter(old => old + 1)
       }
-    })
-      .then((identifier) => {
-        const protocol = window.location.protocol;
-        const host = window.location.host;
-        setLink(`${protocol}//${host}/file/${identifier}`);
-        setUploaded(true);
-        setUploading(false);
-      })
-      .catch((err) => {
-        setErrorMessage(
-          "There was an error and your files(s) could not be uploaded. Try refreshing the page !"
-        );
-        setDisplayError(true);
-        setUploaded(false);
-        setUploading(false);
-      });
+      const uploadedMetadata = await saveMetadata(metadata)
+      
+      const protocol = window.location.protocol;
+      const host = window.location.host;
+      setLink(`${protocol}//${host}/file/${metadata.identifier}`);
+      setUploaded(true);
+      setUploading(false);
+    } catch (err) {
+      console.error(err);
+      setErrorMessage(
+        "There was an error and your files(s) could not be uploaded. Try refreshing the page !"
+      );
+      setDisplayError(true);
+      setUploaded(false);
+      setUploading(false);
+    }
   };
 
   const calcFileSize = (siteInBytes) => {
@@ -389,6 +378,15 @@ const Upload = () => {
                 Your file(s) is uploading right now. Just give us a second to
                 finish your upload.
               </p>
+
+              {files.length > 0 && (
+                <footer>
+                  <progress value={(counter * 100) / files.length} max={100} />
+                  <span className="pl-4">
+                    {counter} / {files.length}
+                  </span>
+                </footer>
+              )}
             </section>
           </div>
         )}
