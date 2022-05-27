@@ -1,5 +1,10 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { getBlob, ref, uploadBytes } from "firebase/storage";
+import {
+  getBlob,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { firestore, storage } from "./config";
 
 export function generateIdentifier(length) {
@@ -13,13 +18,8 @@ export function generateIdentifier(length) {
   return result;
 }
 
-export function uploadFiles(files, identifier) {
-  const promises = [];
-  files.forEach((file) =>
-    promises.push(uploadBytes(ref(storage, `${identifier}/${file.name}`), file))
-  );
-
-  return Promise.all(promises);
+export function uploadFile(file, identifier) {
+  return uploadBytes(ref(storage, `${identifier}/${file.name}`), file);
 }
 
 export function saveMetadata(data) {
